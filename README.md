@@ -1,26 +1,41 @@
 # Hi, I'm Nels Blair 👋
 
-I am a Computational Scientist and AI Engineer specializing in bridging advanced mathematics, econometric modeling, and high-performance machine learning architectures. 
+I am a **Deep-Tech Systems & AI Engineer** and current **PhD Student in Economics** (Expected May 2027), simultaneously completing my **MS in Computer Science**. 
 
-## 🛠️ Technical Stack & Polyglot Capabilities
-- **Primary Languages:** Python 🐍, R, TypeScript, JavaScript, MATLAB, Java, Bash/Linux
-- **Data Science & ML:** Scikit-Learn, TensorFlow, Qiskit, Stan, Spatial Econometrics, BM25, Semantic Search
-- **Local AI & MLOps:** Ollama (Granite/Gemma), Transformers.js, ONNX Runtime Web, Vector Embeddings
-- **Typesetting & Formats:** LaTeX, Beamer, Markdown, XML, HTML
+My core expertise lies at the intersection of mathematical theory, high-dimensional statistical architectures, econometrics, and production software engineering. 
 
-## 🧪 Featured Production Pipelines
-
-### 🔍 1. Client-Side Hybrid Search & Neural Re-Ranker (TypeScript)
-A 100% local, privacy-first search platform executing lexical BM25 and semantic vector embeddings directly in the browser. Uses a local BERT cross-encoder via Transformers.js for neural re-ranking, and hooks into Ollama for on-device LLM context processing.
-
-### 🏡 2. Pullman Hedonic Property Valuation API (Python / R)
-An analytical pipeline that serves real estate econometric models. Wraps high-dimensional R spatial statistics models in a high-performance Python FastAPI service to deliver real-time localized valuation predictions.
-
-### 🧬 3. RNA-Seq Dimensionality Reduction Engine (Python / LaTeX)
-An end-to-end peer-reviewed biological machine learning framework. Benchmarks manifold learning and matrix factorization methods on genomic expression datasets, instantly compiling automated LaTeX research abstracts.
-
-### ⚛️ 4. Quantum Decoherence & State Evolution Simulator (Python)
-A physical systems simulation toolkit built on advanced physics coursework, modeling quantum state degradation using accelerated vector matrices and automated pipeline validations.
+## 🎓 Academic Core & Professional Credentials
+- **Ph.D. Economics** & **M.S. Computer Science** (In Progress, Expected May 2027)
+- **M.S. Mathematics (Theory)** | **M.S. Statistics** | **M.S. Applied Economics**
+- **B.S. Chemical Engineering** (Passed NCEES FE Exam)
+- **WSU CySER Basics (Cybersecurity Certificate)** (Specialized Systems & Cryptographic Infrastructure) (In Progress, Expected June 2027).
 
 ---
-*Building production-grade, mathematically rigorous software, one commit at a time.*
+
+## 🛠️ Polyglot Technical Capabilities
+- **Core Languages:** Python 🐍, R, TypeScript, JavaScript, MATLAB, SAS, Java, Bash/Linux, DOS
+- **Theory & AI Stack:** Hybrid Search Engine Architecture (BM25 + Semantic Vector Embeddings + Cross-Encoders), ONNX Runtime Web, Transformers.js, Ollama, Spatial Statistics, Stan, Macroeconomic Modeling, Qiskit Quantum Computing
+- **Typesetting & Systems:** LaTeX, Beamer, Markdown, HTML, XML
+
+---
+
+## 🧪 Production Engineering Pipelines & Featured Repositories
+
+### 🔍 1. Client-Side Hybrid Search Engine & Neural Re-Ranker
+* **Stack:** TypeScript, ONNX/Transformers.js, Ollama (IBM Granite/Gemma), Markdown
+* **The Architecture:** A 100% offline, privacy-first local search engine running BM25 lexical search and semantic cosine similarity in the browser. Features a BERT cross-encoder neural re-ranker, local GPU inference, and a dynamic notebook interface with intelligent prompt enrichment.
+
+### 🏡 2. Pullman Spatial Hedonic Valuation Engine
+* **Stack:** R (Spatial Stats Core), Python (FastAPI wrapper), Markdown
+* **The Architecture:** A high-performance web service packaging high-dimensional economic housing data for Pullman, WA. Translates native econometric R scripts into production-ready Python FastAPI endpoints with full async data validation.
+
+### 🧬 3. RNA-Seq Manifold Learning & Dimension Reduction Pipeline
+* **Stack:** Python (Scikit-Learn/TensorFlow), LaTeX, Markdown
+* **The Architecture:** A peer-reviewed biological ML package evaluating matrix factorization methods (PCA vs. UMAP vs. Autoencoders) on genomic expression datasets. Automatically generates publication-grade structural analysis and compiled LaTeX reports.
+
+### ⚛️ 4. Quantum Decoherence & State Evolution Tool
+* **Stack:** Python (Qiskit/NumPy), MATLAB/Octave Core, Bash, Markdown
+* **The Architecture:** An advanced mathematical framework modeling quantum degradation and state transformations using vector matrices and automated Linux pipeline orchestration.
+
+---
+*Building production-grade, mathematically rigorous systems at the absolute edge of theory and software.*
