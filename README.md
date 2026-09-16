@@ -1,16 +1,26 @@
-## Hi there 👋
+# Hi, I'm Nels Blair 👋
 
-<!--
-**NelsBlair/NelsBlair** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+I am a Computational Scientist and AI Engineer specializing in bridging advanced mathematics, econometric modeling, and high-performance machine learning architectures. 
 
-Here are some ideas to get you started:
+## 🛠️ Technical Stack & Polyglot Capabilities
+- **Primary Languages:** Python 🐍, R, TypeScript, JavaScript, MATLAB, Java, Bash/Linux
+- **Data Science & ML:** Scikit-Learn, TensorFlow, Qiskit, Stan, Spatial Econometrics, BM25, Semantic Search
+- **Local AI & MLOps:** Ollama (Granite/Gemma), Transformers.js, ONNX Runtime Web, Vector Embeddings
+- **Typesetting & Formats:** LaTeX, Beamer, Markdown, XML, HTML
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+## 🧪 Featured Production Pipelines
+
+### 🔍 1. Client-Side Hybrid Search & Neural Re-Ranker (TypeScript)
+A 100% local, privacy-first search platform executing lexical BM25 and semantic vector embeddings directly in the browser. Uses a local BERT cross-encoder via Transformers.js for neural re-ranking, and hooks into Ollama for on-device LLM context processing.
+
+### 🏡 2. Pullman Hedonic Property Valuation API (Python / R)
+An analytical pipeline that serves real estate econometric models. Wraps high-dimensional R spatial statistics models in a high-performance Python FastAPI service to deliver real-time localized valuation predictions.
+
+### 🧬 3. RNA-Seq Dimensionality Reduction Engine (Python / LaTeX)
+An end-to-end peer-reviewed biological machine learning framework. Benchmarks manifold learning and matrix factorization methods on genomic expression datasets, instantly compiling automated LaTeX research abstracts.
+
+### ⚛️ 4. Quantum Decoherence & State Evolution Simulator (Python)
+A physical systems simulation toolkit built on advanced physics coursework, modeling quantum state degradation using accelerated vector matrices and automated pipeline validations.
+
+---
+*Building production-grade, mathematically rigorous software, one commit at a time.*
