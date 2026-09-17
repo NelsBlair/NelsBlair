@@ -25,22 +25,19 @@ My core expertise lies at the intersection of mathematical theory, high-dimensio
 In addition to production pipelines, these standalone scripts may be helpful as tools: 
 *   [Pure NumPy BM25 Search Engine](./bm25_scratch.py) | [Technical Writeup](./README_BM25.md)
 *   [Two-Step Optimal GMM Structural Estimator](./econometric_gmm.py) | [Technical Writeup](./README_GMM.md)
+*   [Quantum Decoherence & State Evolution Tool](./quantum_state_evolution.py) | [Technical Writeup](./README_QUANTUM.md)
 
-### 🔍 1. Client-Side Hybrid Search Engine & Neural Re-Ranker (Mammoth) 
-* **Stack:** TypeScript, ONNX/Transformers.js, Ollama (IBM Granite/Gemma), Markdown
-* **The Architecture:** A 100% offline, privacy-first local search engine running BM25 lexical search and semantic cosine similarity in the browser. Features a BERT cross-encoder neural re-ranker, local GPU inference, and a dynamic notebook interface with intelligent prompt enrichment.
-
-### 🏡 2. Pullman Spatial Hedonic Valuation Engine (Common)
+### 🏡 1. Pullman Spatial Hedonic Valuation Engine (Common)
 * **Stack:** R (Spatial Stats Core), Python (FastAPI wrapper), Markdown
 * **The Architecture:** A high-performance web service packaging high-dimensional economic housing data for Pullman, WA. Translates native econometric R scripts into production-ready Python FastAPI endpoints with full async data validation.
 
-### 🧬 3. RNA-Seq Manifold Learning & Dimension Reduction Pipeline (Pre-Publish on ResearchGate)
+### 🧬 2. RNA-Seq Manifold Learning & Dimension Reduction Pipeline (Pre-Publish on ResearchGate)
 * **Stack:** Python (Scikit-Learn/TensorFlow), LaTeX, Markdown
 * **The Architecture:** A peer-reviewed biological ML package evaluating matrix factorization methods (PCA vs. UMAP vs. Autoencoders) on genomic expression datasets. Automatically generates publication-grade structural analysis and compiled LaTeX reports.
 
-### ⚛️ 4. Quantum Decoherence & State Evolution Tool (Whoops)
-* **Stack:** Python (Qiskit/NumPy), MATLAB/Octave Core, Bash, Markdown
-* **The Architecture:** An advanced mathematical framework modeling quantum degradation and state transformations using vector matrices and automated Linux pipeline orchestration.
+### 🔍 3. Client-Side Hybrid Search Engine & Neural Re-Ranker (Mammoth) 
+* **Stack:** TypeScript, ONNX/Transformers.js, Ollama (IBM Granite/Gemma), Markdown
+* **The Architecture:** A 100% offline, privacy-first local search engine running BM25 lexical search and semantic cosine similarity in the browser. Features a BERT cross-encoder neural re-ranker, local GPU inference, and a dynamic notebook interface with intelligent prompt enrichment.
 
 ---
 *Building production-grade, mathematically rigorous systems at the absolute edge of theory and software.*
