@@ -1,6 +1,6 @@
 # High-Dimensional Generalized Method of Moments (GMM) Estimator
 
-A hand-coded structural econometric simulation engine running two-step optimal GMM optimization loops over endogenous multi-variable fields using pure matrix math.
+A structural econometric simulation engine running two-step optimal GMM optimization loops over endogenous multi-variable fields using matrix algebra.
 
 ## 📐 Econometric Architecture
 The program bypasses macro-level statistics wrappers to isolate simultaneous structural parameters where regressors correlate directly with the disturbance terms ($E[X\epsilon] \neq 0$):
