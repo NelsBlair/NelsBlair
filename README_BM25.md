@@ -1,6 +1,6 @@
 # Pure NumPy BM25 Lexical Ranking Engine
 
-A single-file, zero-dependency implementation of the Okapi BM25 ranking algorithm coded entirely by hand using fundamental linear algebra operations in NumPy.
+A single-file, zero-dependency implementation of the Okapi BM25 ranking algorithm using fundamental linear algebra operations in NumPy.
 
 ## 📐 The Mathematics Behind the Search
 This script skips high-level search index wrappers to isolate the deterministic term-weighting core:
