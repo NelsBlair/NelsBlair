@@ -1,0 +1,21 @@
+# A great place for hidden treasure
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+ENV/
+env/
+
+# R specific files
+.Rhistory
+.RData
+.Ruserdata/
+
+# OS generated files
+.DS_Store
+Thumbs.db
