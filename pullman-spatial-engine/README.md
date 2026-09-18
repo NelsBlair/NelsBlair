@@ -1,6 +1,6 @@
 # 🏡 Pullman Spatial Hedonic Valuation Engine
 
-A high-performance production web service packaging high-dimensional econometric housing data for Pullman, WA. This system successfully bridges native econometric **R spatial frameworks** into production-ready **Python FastAPI endpoints** with full asynchronous data validation.
+A web service packaging high-dimensional spatial econometric hedonic pricing for housing in Pullman, Wa. This system bridges native econometric **R spatial frameworks** into **Python FastAPI endpoints** with data validation.
 
 ## 🛠️ System Architecture & Stack
 - **Econometric Core:** R (Spatial Stats Stack: `spatialreg`, `spdep`)
