@@ -1,0 +1,484 @@
+#%% Setup
+
+# This file holds all the functions for the methods we will compare.
+
+# Imports
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.naive_bayes import GaussianNB
+from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+import os as os
+import json as json
+
+#%% Function Definitions
+
+def reformat_data(raw_GDS_filename, output_folder):
+    '''
+    Reads in a SOFT file and spits out a data folder of easily-readable
+    data in .txt, .tsv, and .json format.
+
+    Parameters
+    ----------
+    raw_GDS_filename : str
+        The name of the SOFT file to read in.
+    output_folder : str
+        The name of the folder to dump the output into.
+
+    Returns
+    -------
+    dict
+        A dictionary containing information on the data subsets.
+    '''
+    print("~~~ Reformatting Data ~~~")
+    
+    # Set up output folder
+    print("- Setting up output directory...")
+    if (not os.path.isdir(output_folder)):
+        os.mkdir(output_folder)
+    
+    # Read in data
+    print("- Reading data...")
+    lines = []
+    with open(raw_GDS_filename) as file:
+        for line in file:
+            lines.append(line)
+
+    # Sections in SOFT files are delimited with "^"
+    print("- Sectioning...")
+    sections = np.arange(len(lines))[["^" in L for L in lines]]
+    sections = np.append(sections, len(lines))
+    sections = [
+        lines[sections[i]:sections[i+1]]
+        for i in range(len(sections)-1)
+    ]
+
+    # The data table begins with "!dataset_table_begin" and ends with
+    # "!dataset_table_end" but we need to cut out the AFFX_ control rows
+    print("- Finding data table...")
+    for i in range(len(lines)):
+        if ("!dataset_table_begin" in lines[i]):
+            start = i + 1
+        elif ("!dataset_table_end" in lines[i]):
+            end = i
+            break
+    cols = np.array(lines[start].replace("\n","").split("\t"))
+    
+    ids = np.loadtxt(
+        raw_GDS_filename,
+        skiprows = start + 1,
+        delimiter = "\t",
+        usecols = [0],
+        dtype = str
+    )
+    affx_rows = np.sum(np.strings.startswith(ids, "AFFX"))
+
+    # Read in each of the data subsets and their corresponding data columns
+    print("- Saving data subsets...")
+    subsets = []
+    for section in sections:
+        name = section[0].split("=")[0].replace(" ","").replace("^","")
+        
+        if (name == "SUBSET"):
+            subsets.append({})
+            for L in section:
+                if ("!subset_description" in L):
+                    subsets[-1]["label"] = L.split("=")[1].replace(
+                        " ",
+                        ""
+                    ).replace("\n", "")
+                elif ("!subset_sample_id" in L):
+                    subsets[-1]["entries"] = L.split("=")[1].replace(
+                        " ",
+                        ""
+                    ).replace("\n", "").split(",")
+                if ("!subset_type" in L):
+                    subsets[-1]["type"] = L.split("=")[1].replace(
+                        " ",
+                        ""
+                    ).replace("\n","")
+            datacols = np.isin(cols, subsets[-1]["entries"])
+            subsets[-1]["data"] = np.loadtxt(
+                raw_GDS_filename,
+                comments = "AFFX",
+                delimiter = "\t",
+                skiprows = start + 1,
+                max_rows = end - start - 1 - affx_rows,
+                usecols = np.arange(len(cols))[datacols]
+            )
+    
+    # Only keep disease_state subsets
+    for i in range(len(subsets)-1, -1, -1):
+        if (subsets[i]["type"] != "diseasestate"):
+            subsets.pop(i)
+    
+    # Remove unnecessary subsets that are contained in other subsets
+    remove = []
+    for i in range(len(subsets)):
+        for j in range(len(subsets)):
+            if (i != j) and (j not in remove):
+                if (set(subsets[i]["entries"]) <= set(subsets[j]["entries"])):
+                    remove.append(i)
+                    break
+    for i in range(len(remove)-1, -1, -1):
+        subsets.pop(remove[i])
+
+    # Save this
+    for subset in subsets:
+        fname = subset["label"] + ".tsv"
+        np.savetxt(output_folder+"/"+fname, subset["data"], delimiter = "\t")
+        subset["data"] = fname
+
+    # Read in the gene data (but not all the gene data)
+    print("- Saving gene data...")
+    geneData = np.loadtxt(
+        raw_GDS_filename,
+        dtype = str,
+        comments = "AFFX",
+        delimiter = "\t",
+        skiprows = start,
+        max_rows = end - start - affx_rows,
+        usecols = np.arange(len(cols))[
+            np.isin(
+                cols,
+                [
+                    "ID_REF",
+                    "IDENTIFIER",
+                    "Gene title",
+                    "Gene symbol",
+                    "Gene ID",
+                    "GenBank Accession"
+                ]
+            )
+        ]
+    )
+
+    # Save this
+    np.savetxt(
+        output_folder + "/gene_data.tsv",
+        geneData[1:,:],
+        fmt = "%s",
+        delimiter = "\t",
+        header = "\t".join(geneData[0,:])
+    )
+    
+    np.savetxt(
+        output_folder + "/gene_ids.txt",
+        geneData[1:,0][geneData[1:,1] != "--Control"],
+        fmt = "%s",
+        delimiter = "\n",
+    )
+    
+    # GO Stuff
+    print("- Saving GO data...")
+    if (not os.path.isdir(output_folder + "/GO")):
+        os.mkdir(output_folder + "/GO")
+    GO_cols = np.char.startswith(cols, "GO")
+    
+    files = [
+        open(output_folder+"/GO/"+cols[GO_cols][i].split(":")[1]+".txt", "w")
+        for i in range(np.sum(GO_cols))
+    ]
+    indices = np.arange(len(cols))[GO_cols]
+    for line in lines[start + 1:end]:
+        if (not line.startswith("AFFX")):
+            entries = line.replace("\n", "").split("\t")
+            for i in range(len(files)):
+                files[i].write(entries[indices[i]].replace("///","\t") + "\n")
+    
+    for file in files:
+        file.close()
+    
+    print("~~~ Reformatted Data ~~~")
+    return subsets
+
+#%%% Evaluation
+
+def confusion_matrix(Y_hat, Y, k):
+    '''
+    Generates a kxk (where k is the number of classes) array representing the
+    confusion matrix.
+     |N  P <-- Actual
+    -+-----
+    N|TN FN
+    P|FP TP
+    ^
+    Guesses
+    
+    Parameters
+    ----------
+    Y_hat : np.ndarray of int
+        The guesses.
+    Y : np.ndarray of int
+        The correct answers.
+    k : int
+        The number of classes.
+
+    Returns
+    -------
+    np.ndarray of shape (k,k) of int, where cell (i,j) is the number of
+    guesses i when the true answer was j.
+    '''
+    M = np.zeros((k,k), dtype = int)
+    for i in range(k):
+        for j in range(k):
+            M[i,j] = np.sum((Y_hat == i) & (Y == j))
+    return M
+
+#%% Model Functions
+
+def execute_model(model_function, filename):
+    '''
+    Takes in a model function, then performs the model training and evaluation
+    and dumps output results specified directory.
+
+    Parameters
+    ----------
+    model_function : callable
+        Must take in the following arguments, in this order:
+            training_X
+            training_Y
+        and then return the evaluation results.
+    filename : str
+        The name of the file to dump the results into.
+
+    Returns
+    -------
+    None
+    '''
+    print("~~~ Executing Model ~~~")
+    # Load datasets
+    datasets = np.loadtxt("datasets.txt", dtype = str)
+    
+    for dataset in datasets:
+        print("- " + dataset + "...")
+        for dirEntry in os.scandir(dataset):
+            name = dirEntry.name
+            if (name != "Data") and (os.path.isdir(dataset + "/" + name)):
+                print("-- Strategy " + name + "...")
+                subItems = [
+                    thing.name
+                    for thing in os.scandir(dataset + "/" + name)
+                ]
+                if ("training_X.tsv" in subItems):
+                    results = model_function(
+                        np.loadtxt(
+                            dataset + "/" + name + "/training_X.tsv",
+                            delimiter = "\t"
+                        ),
+                        np.loadtxt(
+                            dataset + "/" + name + "/training_Y.tsv",
+                            delimiter = "\t",
+                            dtype = int
+                        )
+                    )
+                    output_model_results(results,dataset+"/"+name+"/"+filename)
+                else:
+                    for item in subItems:
+                        print("--- " + item + "...")
+                        results = model_function(
+                            np.loadtxt(
+                                dataset+"/"+name+"/"+item+"/training_X.tsv",
+                                delimiter = "\t"
+                            ),
+                            np.loadtxt(
+                                dataset+"/"+name+"/"+item+"/training_Y.tsv",
+                                delimiter = "\t",
+                                dtype = int,
+                            )
+                        )
+                        output_model_results(
+                            results,
+                            dataset+"/"+name+"/"+item+"/"+filename
+                        )
+    print("~~~ Executed Model ~~~")
+
+def leave_one_out_validation(train_f, X, Y, *args, **kwargs):
+    '''
+    Performs leave-one-out validation to measure the performance of a model.
+
+    Parameters
+    ----------
+    train_f : function
+        The function to train the model with. Must take in X and Y as its first
+        two arguments, then any other *args and **kwargs. Must return a model
+        that has the .predict() method.
+    X : np.ndarray of float
+        The dataset. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The labels.
+    *args :
+        Passed to train_f.
+    **kwargs :
+        Passed to train_f.
+
+    Returns
+    -------
+    dict of evaluation statistics.
+    '''
+    print("~~~ Leave-One-Out Validation ~~~")
+    n = np.shape(X)[0]
+    I = np.arange(n)
+    k = np.max(Y) + 1
+    M = np.zeros((k,k), dtype = int)
+    predictions = np.zeros((n,n), dtype = int)
+    for i in range(n):
+        if (i % 10 == 0):
+            print("- " + str(i + 1) + "/" + str(n))
+        keep = I != i
+        this_X = X[keep,:]
+        this_Y = Y[keep]
+        
+        model = train_f(this_X, this_Y, *args, **kwargs)
+        Y_hat = model.predict(X[i:(i+1),:])
+        M += confusion_matrix(Y_hat, Y[i:(i+1)], k)
+        
+        predictions[:,i] = Y_hat
+    
+    print("~~~ Leave-One-Out Validated ~~~")
+    return {"prediction": predictions.tolist(), "results": M.tolist()}
+
+def output_model_results(results, name):
+    '''
+    Outputs the results of the model evaluation.
+
+    Parameters
+    ----------
+    results : dict
+        The dictionary of results.
+    name : str
+        The name of the file to save it as.
+
+    Returns
+    -------
+    None.
+    '''
+    with open(name, "w") as file:
+        json.dump(results, file)
+
+def train_decision_tree(X, Y, max_depth = 6):
+    '''
+    Trains a decision tree on a given dataset with given labels.
+
+    Parameters
+    ----------
+    X : np.ndarray of float
+        The training data. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The training labels. The entry at index i must be the label for the
+        training data point in X at row i.
+    max_depth : int, optional
+        The maximum depth to allow the classifier to reach. The default is 6.
+
+    Returns
+    -------
+    DecisionTreeClassifier trained on the supplied data.
+    '''
+    DT = DecisionTreeClassifier(
+        criterion = "entropy",
+        max_depth = max_depth
+    )
+    DT.fit(X, Y)
+    return DT
+
+def train_random_forest(X, Y, n_estimators = 100, max_depth = 6):
+    '''
+    Trains a random forest on a given dataset with given labels.
+
+    Parameters
+    ----------
+    X : np.ndarray of float
+        The training data. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The training labels. The entry at index i must be the label for the
+        training data point in X at row i.
+    n_estimators : int, optional
+        The number of estimators to use in the classifier. The default is 100.
+    max_depth : int, optional
+        The maximum depth to allow the classifier to reach. The default is 6.
+
+    Returns
+    -------
+    RandomForestClassifier trained on the supplied data.
+    '''
+    RF = RandomForestClassifier(
+        n_estimators = n_estimators,
+        criterion = "entropy",
+        max_depth = max_depth
+    )
+    RF.fit(X, Y)
+    return RF
+
+def train_naive_bayes(X, Y, priors = None):
+    '''
+    Trains a naive Bayes classifier on a given dataset with given labels.
+
+    Parameters
+    ----------
+    X : np.ndarray of float
+        The training data. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The training labels. The entry at index i must be the label for the
+        training data point in X at row i.
+    priors : np.ndarray of float, optional
+        The prior probabilities of each class, stored in an array. Defaults
+        to None.
+
+    Returns
+    -------
+    GaussianNB trained on the supplied data.
+    '''
+    NBC = GaussianNB(priors = priors)
+    NBC.fit(X, Y)
+    return NBC
+
+def train_support_vector_machine(X, Y, C = 1.0, kernel = "rbf", degree = 1):
+    '''
+    Trains a support vector machine on a given dataset with given labels.
+
+    Parameters
+    ----------
+    X : np.ndarray of float
+        The training data. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The training labels. The entry at index i must be the label for the
+        training data point in X at row i.
+    C : float, optional
+        The regularization parameter for the SVC. Defaults to 1.0.
+    kernel : string, optional
+        The kernel to use when training. Defaults to "rbf".
+    degree : int, optional
+        The degree of the kernel if the kernel is "poly".
+
+    Returns
+    -------
+    SVC trained on the supplied data.
+    '''
+    SVM = SVC(C = C, kernel = kernel, degree = degree)
+    SVM.fit(X, Y)
+    return SVM
+
+def train_k_nearest_neighbours(X, Y, k = 3, p = 2):
+    '''
+    Trains a support vector machine on a given dataset with given labels.
+
+    Parameters
+    ----------
+    X : np.ndarray of float
+        The training data. Each ROW must be a data point.
+    Y : np.ndarray of int
+        The training labels. The entry at index i must be the label for the
+        training data point in X at row i.
+    k : int, optional
+        The number of neighbours to consider near. Defaults to 3.
+    p : float, optional
+        The power of the Minkowski distance. Defaults to 2.
+
+    Returns
+    -------
+    KNeighborsClassifier trained on the supplied data.
+    '''
+    kNN = KNeighborsClassifier(n_neighbors = k, p = p)
+    kNN.fit(X, Y)
+    return kNN
