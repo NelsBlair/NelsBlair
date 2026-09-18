@@ -5,7 +5,10 @@ An advanced transcriptomic machine learning pipeline designed to systematically 
 ## 🔬 Scientific & Academic Context
 This software pipeline serves as the production implementation supporting the broader transcriptomic structural survey, referencing methodologies highlighted in:
 > **Survey of Dimensionality Reduction Techniques and their Applications for Classifying Disease State in Human RNA-seq Data**  
-> *Academic Circle & Discussions:* [ResearchGate Publication Context](https://researchgate.net) (Collaborative validation mapping frameworks by Paul Ola and Roya Campos).
+> *Academic Circle & Discussions:* [ResearchGate Publication Context](https://researchgate.net) This was a team project for machine learning course (Nels Blair was a Product Owner (later a writer), Nolan Middleton was the workhorse, Jehanzeb Saleem described the models for team meetings, Roya Campos described the application for team meetings, then Paul Ola posted to ResearchGate for collaborative validation).
+Pre-publication on ResearchGate and Original Repo on GitHub (Nolan Middleton)
+https://www.researchgate.net/publication/410589585_Survey_of_Dimensionality_Reduction_Techniques_and_their_Applications_for_Classifying_Disease_State_in_Human_RNA-seq_Data
+https://github.com/nolan-middleton/CPT_S-Group-Project-Fall-2025
 
 ---
 
