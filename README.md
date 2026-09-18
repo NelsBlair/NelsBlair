@@ -27,7 +27,7 @@ My core expertise lies at the intersection of mathematical theory, high-dimensio
 
 ### 🧬 2. RNA-Seq Manifold Learning & Dimension Reduction Pipeline (Pre-Publish)
 * **Stack:** Python (Scikit-Learn/TensorFlow), LaTeX, Markdown
-* **The Architecture:** A peer-reviewed biological ML package evaluating matrix factorization methods (PCA vs. UMAP vs. Autoencoders) on genomic expression datasets. Automatically generates publication-grade structural analysis and compiled LaTeX reports.
+* **The Architecture:** ML pipeline evaluating linear/non-linear manifold learning architectures (PCA, KPCA, NMF) across 5 classification models using human RNA-seq clinical data.
 
 ### 🏡 3. Pullman Spatial Hedonic Valuation Engine (Common)
 * **Stack:** R (Spatial Stats Core), Python (FastAPI wrapper), Markdown
