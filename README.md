@@ -21,9 +21,9 @@ My core expertise lies at the intersection of mathematical theory, high-dimensio
 
 ## 🧪 Production Engineering Pipelines & Featured Repositories
 
-### 🔍 1. Client-Side Hybrid Search Engine & Neural Re-Ranker (Mammoth) 
-* **Stack:** TypeScript, ONNX/Transformers.js, Ollama (IBM Granite/Gemma), Markdown
-* **Core Architecture:** 100% offline, privacy-first local search engine running BM25 lexical search and semantic cosine similarity in-browser. Features a BERT cross-encoder neural re-ranker, local GPU inference via ONNX Runtime Web, and dynamic prompt enrichment.
+### 🔍 1. Client-Side Hybrid Search Engine & Agentic RAG Workbench (Large Codebase)
+* **Stack:** SvelteKit (Svelte 5 Runes), TypeScript, SQLite (Drizzle ORM), Transformers.js, Ollama / GitHub Models
+* **Core Architecture:** Privacy-first, local retrieval-augmented generation (RAG) workbench featuring a windowed layout workspace. Implements a multi-stage hybrid pipeline combining lexical (BM25) and semantic retrieval with a local BERT cross-encoder neural re-ranker via Transformers.js for deep semantic precision. Offers a multi-turn agent framework supporting live tool-calling execution (including Pyodide Python sandboxed analysis and local search), streaming model interactions, and automated document ingestion (PDF/OCR). See Repositories, Deployable Knowledge (hosted by MAP9900). 
 
 ### 🧬 2. RNA-Seq Manifold Learning & Dimension Reduction Pipeline (Pre-Publish)
 * **Stack:** Python (Scikit-Learn/TensorFlow), LaTeX, Markdown
